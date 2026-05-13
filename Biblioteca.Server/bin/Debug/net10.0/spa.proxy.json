@@ -1,0 +1,10 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:63504",
+"RedirectUrl": "",
+"LaunchCommand": "npm run dev",
+"WorkingDirectory": "C:\\Users\\gaspa\\source\\repos\\Biblioteca\\Biblioteca.Server\\..\\biblioteca.client",
+"MaxTimeoutInSeconds": "120",
+"KeepRunning": "false"
+}
+}
