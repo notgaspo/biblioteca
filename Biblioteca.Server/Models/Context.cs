@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-namespace Biblioteca.Server.Models;
+using Biblioteca.Server.Models;
 public class BibliotecaDbContext : DbContext
 {
     //miembro constructor 
@@ -17,15 +17,23 @@ public class BibliotecaDbContext : DbContext
     //aca va el tema de OnModelCreating que es para configurar las tablas
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        //configuro nombres de usuario
         modelBuilder
             .Entity<User>()
             .Property(a => a.Username)
             .IsRequired()
             .HasMaxLength(10);
+        //configuro contraseñas
         modelBuilder
             .Entity<User>()
             .Property(a => a.Password)
             .IsRequired()
             .HasMaxLength(8);
+        //configuro relacion autor-libro
+        modelBuilder
+            .Entity<Book>()
+            .HasOne(b => b.Author)
+            .WithMany(a => a.Books)
+            .HasForeignKey(b => b.AuthorId);
     }
 }

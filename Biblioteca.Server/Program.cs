@@ -1,4 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using Biblioteca.Server.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<BibliotecaDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 

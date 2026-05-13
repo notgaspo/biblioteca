@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using SQLitePCL;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
@@ -20,5 +21,7 @@ public class AuthController : ControllerBase
     [HttpPost]
     public ActionResult Get() { return Ok("AuthController is working"); }
 
+
+}
 
 }

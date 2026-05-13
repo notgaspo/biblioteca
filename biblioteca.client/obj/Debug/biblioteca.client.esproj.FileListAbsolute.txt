@@ -1,1 +1,2 @@
 C:\Users\gaspa\source\repos\Biblioteca\biblioteca.client\obj\Debug\biblioteca.client.esproj.CoreCompileInputs.cache
+C:\Users\Gaspi\source\repos\Biblioteca\biblioteca.client\obj\Debug\biblioteca.client.esproj.CoreCompileInputs.cache
