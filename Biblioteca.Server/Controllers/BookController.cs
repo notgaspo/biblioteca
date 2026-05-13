@@ -21,7 +21,6 @@ public class BookController : ControllerBase
         _context = context;
     }
 
-    //los get
     [HttpGet]
     public IActionResult GetBooks()
     {
@@ -36,61 +35,47 @@ public class BookController : ControllerBase
     }
 
     [HttpGet("search{name}")]
-    public IActionResult GetBookByName(string name)
+    public IActionResult GetBookByName(string name) //aca hay que hacer el caso null
     {
+        if (!_context.Books.Any(x => x.Name == name))
+            return NotFound("No se encontro el libro");
         return Ok(_context.Books.FirstOrDefault(b => b.Name == name));
     }
 
-    //MOVER A UN CONTROLADOR DE AUTORES
-    [HttpGet("author/search{name}")]
-    public IActionResult GetAuthorByName(string name)
-    {
-        return Ok(_context.Authors.FirstOrDefault(a => a.Name == name));
-    }
-
-    //los post (IMPLEMENTAR DOTs)
     [HttpPost]
     public IActionResult AddBook([FromBody] BookInput newData)
     {
-        if (newData.Name == null)
+        if (newData.NewName == null)
             return BadRequest("Asigne un nombre al nuevo libro");
         if (!_context.Authors.Any(b => b.Name == newData.AuthorName))
             return BadRequest("Ingrese un autor valido");
+
         var authorId = _context.Authors.FirstOrDefault(a => a.Name == newData.AuthorName).Id;
-        var book = new Book { Name = newData.Name, AuthorId = authorId };
+        var book = new Book { Name = newData.NewName, AuthorId = authorId };
         _context.Books.Add(book);
         _context.SaveChanges();
         return Ok(book);
     }
 
-    //MOVER A UN CONTROLADOR DE AUTORES
-    [HttpPost("author")]
-    public IActionResult AddAuthor([FromBody] AuthorInput newData)
-    {
-        if (newData == null)
-            return BadRequest("Asigne un nombre al nuevo autor porfavor");
-        var author = new Author { Name = newData.Name };
-        _context.Authors.Add(author);
-        _context.SaveChanges();
-        return Ok(author);
-    }
-
-    //los put
     [HttpPut("{id}")]
-    public IActionResult EditBook(int id, [FromBody] BookInput newData)
+    public IActionResult EditBook([FromBody] BookInput newData)
     {
-        if (!_context.Books.Any(b => b.Id == id))
+        if (!_context.Books.Any(b => b.Name == newData.OldName))
             return NotFound("El libro no esta registrado");
 
-        var book = _context.Books.FirstOrDefault(b => b.Id == id);
-        book.Name = newData.Name;
-        book.AuthorId = newData.AuthorId;
+        var book = _context.Books.FirstOrDefault(b => b.Name == newData.OldName);
+        book.Name = newData.NewName;
 
+        if (!(newData.AuthorName == null))
+        {
+            var author = _context.Authors.FirstOrDefault(a => a.Name == newData.AuthorName);
+            book.Author = author;
+        }
         _context.SaveChanges();
         return Ok(book);
+
     }
 
-    //los delete
     [HttpDelete("{id}")]
     public IActionResult DeleteBook(int id)
     {
@@ -101,14 +86,4 @@ public class BookController : ControllerBase
         return NoContent();
     }
 
-    //MOVER A UN CONTROLADOR DE AUTORES
-    [HttpDelete("author/{id}")]
-    public IActionResult DeleteAuthor(int id)
-    {
-        var author = _context.Authors.Find(id);
-        if (author == null) return NotFound();
-        _context.Authors.Remove(author);
-        _context.SaveChanges();
-        return NoContent();
-    }
 }
