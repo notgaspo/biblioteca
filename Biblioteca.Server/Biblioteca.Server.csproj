@@ -37,10 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Biblioteca.Server.csproj.user" />
   </ItemGroup>
 

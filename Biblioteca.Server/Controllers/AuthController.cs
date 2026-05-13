@@ -18,10 +18,7 @@ public class AuthController : ControllerBase
 
     }
     [HttpGet]
-    [HttpPost]
     public ActionResult Get() { return Ok("AuthController is working"); }
 
-
-}
 
 }

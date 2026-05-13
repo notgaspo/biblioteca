@@ -203,3 +203,4 @@ C:\Users\Gaspi\source\repos\Biblioteca\Biblioteca.Server\obj\Debug\net10.0\refin
 C:\Users\Gaspi\source\repos\Biblioteca\Biblioteca.Server\obj\Debug\net10.0\Biblioteca.Server.pdb
 C:\Users\Gaspi\source\repos\Biblioteca\Biblioteca.Server\obj\Debug\net10.0\Biblioteca.Server.genruntimeconfig.cache
 C:\Users\Gaspi\source\repos\Biblioteca\Biblioteca.Server\obj\Debug\net10.0\ref\Biblioteca.Server.dll
+C:\Users\Gaspi\source\repos\Biblioteca\Biblioteca.Server\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
