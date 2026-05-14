@@ -8,6 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using Biblioteca.Server.Models;
 using System.Reflection.Metadata.Ecma335;
 using Biblioteca.Server.DTOs;
+using AutoMapper;
 
 namespace Biblioteca.Server.Controllers;
 
@@ -16,9 +17,11 @@ namespace Biblioteca.Server.Controllers;
 public class BookController : ControllerBase
 {
     private readonly BibliotecaDbContext _context;
-    public BookController(BibliotecaDbContext context)
+    private readonly IMapper _mapper;
+    public BookController(BibliotecaDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -45,35 +48,26 @@ public class BookController : ControllerBase
     [HttpPost]
     public IActionResult AddBook([FromBody] BookInput newData)
     {
-        if (newData.NewName == null)
-            return BadRequest("Asigne un nombre al nuevo libro");
-        if (!_context.Authors.Any(b => b.Name == newData.AuthorName))
+        var newBook = _mapper.Map<Book>(newData);
+        var author = _context.Authors.Find(newData.AuthorId);
+        if (author == null)
             return BadRequest("Ingrese un autor valido");
 
-        var authorId = _context.Authors.FirstOrDefault(a => a.Name == newData.AuthorName).Id;
-        var book = new Book { Name = newData.NewName, AuthorId = authorId };
-        _context.Books.Add(book);
+        _context.Books.Add(newBook);
         _context.SaveChanges();
-        return Ok(book);
+        return Ok(_mapper.Map<BookResponse>(newBook));
     }
 
     [HttpPut("{id}")]
-    public IActionResult EditBook([FromBody] BookInput newData)
+    public IActionResult EditBook(int id, [FromBody] BookInput newData) //esto esta mal, para q se usa el id?
     {
-        if (!_context.Books.Any(b => b.Name == newData.OldName))
-            return NotFound("El libro no esta registrado");
-
-        var book = _context.Books.FirstOrDefault(b => b.Name == newData.OldName);
-        book.Name = newData.NewName;
-
-        if (!(newData.AuthorName == null))
-        {
-            var author = _context.Authors.FirstOrDefault(a => a.Name == newData.AuthorName);
-            book.Author = author;
-        }
+       var editBook = _context.Books.Find(id);
+        if (editBook == null)
+            return NotFound("No se encontro el libro");
+       editBook.Name = newData.Name;
+       editBook.AuthorId = newData.AuthorId;
         _context.SaveChanges();
-        return Ok(book);
-
+        return Ok(_mapper.Map<BookResponse>(editBook));
     }
 
     [HttpDelete("{id}")]

@@ -9,6 +9,7 @@ builder.Services.AddDbContext<BibliotecaDbContext>(options =>
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<Biblioteca.Server.Profiler.BookProfile>());
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
